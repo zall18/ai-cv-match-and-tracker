@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Wand2, Settings, User, LogOut } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -14,14 +14,16 @@ export function Sidebar() {
     { name: 'AI Matcher', href: '/matcher', icon: Wand2 },
   ];
 
+  const router = useRouter();
+
   const secondaryItems = [
-    { name: 'Profil', href: '#', icon: User },
-    { name: 'Pengaturan', href: '#', icon: Settings },
+    { name: 'Pengaturan & Profil', href: '/settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = '/'; // force reload to clear states
+    router.push('/');
+    router.refresh();
   };
 
   return (
@@ -61,15 +63,20 @@ export function Sidebar() {
           <nav className="flex flex-col gap-1">
             {secondaryItems.map((item) => {
               const Icon = item.icon;
+              const isActive = pathname === item.href;
               return (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-brand-secondary hover:text-brand-primary hover:bg-slate-100 transition-colors"
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive 
+                      ? 'bg-brand-primary text-white' 
+                      : 'text-brand-secondary hover:text-brand-primary hover:bg-slate-100'
+                  }`}
                 >
                   <Icon className="w-5 h-5" />
                   {item.name}
-                </a>
+                </Link>
               );
             })}
           </nav>
