@@ -17,11 +17,11 @@ export default function Home() {
         <div className="animate-fade-in-up flex flex-col items-center z-10 max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-brand-tertiary/20 text-brand-tertiary font-bold mb-8 shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-brand-tertiary animate-pulse"></span>
-            CV Matcher V2 Kini Tersedia
+            CV Matcher Kini Tersedia
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold text-brand-primary mb-6 tracking-tight leading-tight">
-            Berhenti Melamar <br className="hidden md:block"/> 
+            Berhenti Melamar <br className="hidden md:block" />
             Dengan <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-tertiary to-purple-600">CV Generik.</span>
           </h1>
 
@@ -109,7 +109,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-3xl font-bold mb-3">Kanban Tracker</h3>
                 <p className="text-slate-300 text-lg mb-8">Pindahkan kartu dari Wishlist ke Accepted dengan antarmuka dinamis dan rapi.</p>
-                
+
                 {/* Mockup visual */}
                 <div className="mt-auto space-y-3 opacity-90 group-hover:translate-y-2 transition-transform duration-500">
                   <div className="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20 flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function Home() {
       <section className="w-full px-4 py-32 bg-white">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-brand-primary via-slate-800 to-brand-primary rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
-          
+
           <div className="relative z-10">
             <Zap className="w-12 h-12 text-brand-tertiary mx-auto mb-6" />
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
