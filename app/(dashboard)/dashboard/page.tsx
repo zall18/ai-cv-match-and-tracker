@@ -3,28 +3,24 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Button } from '@/components/ui/Button';
-import { Plus, Trash2 } from 'lucide-react';
-import Link from 'next/link';
+import { Target, CheckCircle, TrendingUp, Clock, FileText } from 'lucide-react';
 
 type Application = {
   id: string;
   company_name: string;
   role_name: string;
   match_score: number;
-  status: 'Wishlist' | 'Drafting' | 'Applied' | 'Interview';
+  status: 'Wishlist' | 'Drafting' | 'Applied' | 'Interview' | 'Accepted' | 'Rejected';
+  created_at: string;
 };
 
-const COLUMNS = ['Wishlist', 'Drafting', 'Applied', 'Interview'] as const;
-
-export default function Dashboard() {
+export default function DashboardOverview() {
   const router = useRouter();
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
-
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -33,19 +29,8 @@ export default function Dashboard() {
         if (mounted) fetchApplications(session.user.id);
       }
     };
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session && mounted) {
-        router.replace('/');
-      }
-    });
-
     checkAuth();
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
+    return () => { mounted = false; };
   }, [router]);
 
   const fetchApplications = async (userId: string) => {
@@ -65,117 +50,96 @@ export default function Dashboard() {
     }
   };
 
-  const deleteApplication = async (id: string) => {
-    try {
-      const { error } = await supabase.from('applications').delete().eq('id', id);
-      if (error) throw error;
-      setApplications(prev => prev.filter(app => app.id !== id));
-    } catch (error) {
-      console.error('Error deleting application:', error);
-    }
-  };
+  // Kalkulasi Statistik
+  const totalApplied = applications.filter(app => !['Wishlist', 'Drafting'].includes(app.status)).length;
+  const successApps = applications.filter(app => ['Interview', 'Accepted'].includes(app.status)).length;
+  const successRate = totalApplied > 0 ? Math.round((successApps / totalApplied) * 100) : 0;
+  
+  const scores = applications.filter(app => app.match_score > 0).map(app => app.match_score);
+  const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
 
-  const handleDragStart = (e: React.DragEvent, id: string) => {
-    e.dataTransfer.setData('applicationId', id);
-    // e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDrop = async (e: React.DragEvent, newStatus: Application['status']) => {
-    e.preventDefault();
-    const id = e.dataTransfer.getData('applicationId');
-    if (!id) return;
-
-    // Update state locally first for instant feedback (Optimistic Update)
-    setApplications(prev => prev.map(app => 
-      app.id === id ? { ...app, status: newStatus } : app
-    ));
-
-    // Persist to Supabase
-    try {
-      const { error } = await supabase
-        .from('applications')
-        .update({ status: newStatus })
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error updating status:', error);
-      // Revert if failed
-      fetchApplications();
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault(); // Necessary to allow dropping
-  };
+  if (loading) {
+    return <div className="flex-1 flex items-center justify-center h-full text-brand-secondary">Memuat metrik...</div>;
+  }
 
   return (
     <div className="flex-1 p-8 max-w-7xl mx-auto w-full">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-brand-primary">Kanban Tracker</h1>
-          <p className="text-brand-secondary mt-1">Kelola dan pantau proses lamaran kerja Anda</p>
-        </div>
-        <Link href="/matcher">
-          <Button variant="primary" className="gap-2">
-            <Plus className="w-4 h-4" />
-            Tambah Lamaran Baru
-          </Button>
-        </Link>
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold text-brand-primary">Dashboard Overview</h1>
+        <p className="text-brand-secondary mt-1">Pantau performa dan tingkat kesuksesan lamaran Anda.</p>
       </div>
 
-      {loading ? (
-        <div className="text-center text-brand-secondary py-20">Memuat data...</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
-          {COLUMNS.map(column => (
-            <div 
-              key={column} 
-              className="bg-slate-100 rounded-xl p-4 min-h-[500px] transition-colors border-2 border-transparent hover:border-slate-300"
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, column)}
-            >
-              <div className="flex items-center justify-between mb-4 px-2">
-                <h3 className="font-bold text-brand-primary">{column}</h3>
-                <span className="bg-slate-200 text-brand-secondary text-xs px-2 py-1 rounded-full font-medium">
-                  {applications.filter(a => a.status === column).length}
-                </span>
-              </div>
-              
-              <div className="flex flex-col gap-3 h-full">
-                {applications.filter(a => a.status === column).map(app => (
-                  <div 
-                    key={app.id} 
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, app.id)}
-                    className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 group relative cursor-grab active:cursor-grabbing hover:border-brand-tertiary transition-colors"
-                  >
-                    <button 
-                      onClick={() => deleteApplication(app.id)}
-                      className="absolute top-3 right-3 text-slate-300 hover:text-brand-danger opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                    <div className="text-xs font-semibold text-brand-tertiary mb-1">{app.company_name}</div>
-                    <div className="font-bold text-brand-primary leading-tight mb-3 pr-6">{app.role_name}</div>
-                    {app.match_score > 0 && (
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-brand-tertiary rounded-full" 
-                            style={{ width: `${app.match_score}%` }} 
-                          />
-                        </div>
-                        <span className="text-xs font-bold text-brand-secondary">{app.match_score}%</span>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+      {/* Cards Statistik */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+            <Target className="w-7 h-7" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-slate-500 mb-1">Total Terkirim</p>
+            <h3 className="text-3xl font-bold text-slate-800">{totalApplied} <span className="text-sm font-normal text-slate-400">lamaran</span></h3>
+          </div>
         </div>
-      )}
+
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center shrink-0">
+            <TrendingUp className="w-7 h-7" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-slate-500 mb-1">Success Rate (Interview/Lolos)</p>
+            <h3 className="text-3xl font-bold text-slate-800">{successRate}%</h3>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 bg-brand-tertiary/10 text-brand-tertiary rounded-xl flex items-center justify-center shrink-0">
+            <CheckCircle className="w-7 h-7" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-slate-500 mb-1">Rata-rata Match Score</p>
+            <h3 className="text-3xl font-bold text-slate-800">{avgScore}%</h3>
+          </div>
+        </div>
+      </div>
+
+      {/* Aktivitas Terakhir */}
+      <div className="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm">
+        <h2 className="text-xl font-bold text-brand-primary mb-6 flex items-center gap-2">
+          <Clock className="w-5 h-5" /> Aktivitas Terakhir
+        </h2>
+        
+        {applications.length === 0 ? (
+          <p className="text-slate-500 text-center py-8">Belum ada aktivitas lamaran.</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {applications.slice(0, 5).map((app) => {
+              const date = new Date(app.created_at).toLocaleDateString('id-ID', { 
+                day: 'numeric', month: 'short', year: 'numeric' 
+              });
+              
+              return (
+                <div key={app.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-slate-100 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center text-slate-400">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800">{app.role_name}</h4>
+                      <p className="text-sm text-slate-500">{app.company_name} • <span className="text-brand-tertiary font-medium">Match: {app.match_score}%</span></p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-xs font-medium bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm">
+                      Status: {app.status}
+                    </span>
+                    <span className="text-xs text-slate-400">{date}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

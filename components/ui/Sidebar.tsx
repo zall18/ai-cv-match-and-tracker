@@ -9,7 +9,8 @@ export function Sidebar() {
   const pathname = usePathname();
 
   const menuItems = [
-    { name: 'Kanban Tracker', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Dashboard Overview', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Kanban Tracker', href: '/tracker', icon: LayoutDashboard },
     { name: 'AI Matcher', href: '/matcher', icon: Wand2 },
   ];
 
