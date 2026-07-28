@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/Button';
-import { Plus, Trash2, Edit2, FileText } from 'lucide-react';
+import { Plus, Trash2, Edit2, FileText, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 
@@ -173,13 +173,6 @@ export default function Tracker() {
                   >
                     <div className="absolute top-3 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 px-1 rounded-md shadow-sm border border-slate-100">
                       <button 
-                        onClick={() => router.push(`/cover-letter?id=${app.id}`)}
-                        className="p-1.5 text-slate-400 hover:text-brand-primary rounded"
-                        title="Buat Cover Letter"
-                      >
-                        <FileText className="w-4 h-4" />
-                      </button>
-                      <button 
                         onClick={() => router.push(`/matcher?id=${app.id}`)}
                         className="p-1.5 text-slate-400 hover:text-brand-tertiary rounded"
                         title="Edit Lamaran"
@@ -197,7 +190,7 @@ export default function Tracker() {
                     <div className="text-xs font-semibold text-brand-tertiary mb-1">{app.company_name}</div>
                     <div className="font-bold text-brand-primary leading-tight mb-3 pr-20">{app.role_name}</div>
                     {app.match_score > 0 && (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 mb-3">
                         <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-brand-tertiary rounded-full transition-all duration-1000" 
@@ -207,6 +200,14 @@ export default function Tracker() {
                         <span className="text-xs font-bold text-brand-secondary">{app.match_score}%</span>
                       </div>
                     )}
+                    
+                    <button
+                      onClick={() => router.push(`/cover-letter?id=${app.id}`)}
+                      className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 px-4 bg-brand-tertiary/10 hover:bg-brand-tertiary/20 text-brand-tertiary text-sm font-bold rounded-xl transition-all border border-brand-tertiary/20 hover:scale-[1.02]"
+                    >
+                      <Wand2 className="w-4 h-4" />
+                      Buat Cover Letter
+                    </button>
                   </div>
                 ))}
               </div>

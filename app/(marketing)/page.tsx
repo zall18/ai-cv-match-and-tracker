@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { HeroCTA } from "@/components/HeroCTA";
 import { Wand2, LayoutDashboard, Target, ArrowRight, Zap, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
@@ -30,48 +31,61 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-            <Link href="/dashboard" className="w-full sm:w-auto">
-              <Button variant="primary" className="w-full sm:w-auto px-8 py-4 text-lg h-auto shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 gap-2">
-                Mulai Gratis Sekarang <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
+            <HeroCTA />
           </div>
         </div>
 
-        {/* Abstract CSS Dashboard Mockup (Floating) */}
-        <div className="relative w-full max-w-4xl mx-auto mt-20 h-64 md:h-96 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-          {/* Main Window */}
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border border-white/40 rounded-t-3xl shadow-2xl p-6 overflow-hidden flex flex-col">
-            <div className="flex gap-2 mb-6">
+        {/* Feature Tour (Component Based) */}
+        <div className="relative w-full max-w-6xl mx-auto mt-20 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+          <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl shadow-2xl p-8 overflow-hidden">
+            <div className="flex gap-2 mb-8 border-b border-slate-100 pb-4">
               <div className="w-3 h-3 rounded-full bg-red-400"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
               <div className="w-3 h-3 rounded-full bg-green-400"></div>
+              <div className="ml-4 text-sm font-semibold text-slate-400">Cara Kerja CV Matcher</div>
             </div>
-            <div className="flex gap-4 h-full">
-              {/* Sidebar abstract */}
-              <div className="w-1/4 bg-slate-100/50 rounded-xl h-full hidden md:block border border-slate-200/50"></div>
-              {/* Kanban Abstract */}
-              <div className="flex-1 flex gap-4 h-full relative">
-                {/* Column 1 */}
-                <div className="flex-1 bg-slate-50/50 rounded-xl border border-slate-100/50 p-2">
-                  <div className="w-20 h-4 bg-slate-200 rounded mb-4"></div>
-                  <div className="w-full h-24 bg-white rounded-lg shadow-sm mb-2 animate-float"></div>
-                  <div className="w-full h-24 bg-white rounded-lg shadow-sm animate-float-delayed"></div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Step 1 */}
+              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col hover:-translate-y-1 transition-transform">
+                <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mb-4 shadow-sm">1</div>
+                <h4 className="text-xl font-bold text-slate-800 mb-2">Upload CV & Loker</h4>
+                <p className="text-slate-500 text-sm mb-6 flex-1">Masukkan draf CV Anda dan deskripsi lowongan kerja yang dituju.</p>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                  <div className="w-full h-8 bg-slate-100 rounded mb-2 border border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-400 font-medium">+ File PDF</div>
+                  <div className="w-3/4 h-2 bg-slate-200 rounded mt-4"></div>
+                  <div className="w-1/2 h-2 bg-slate-200 rounded mt-2"></div>
                 </div>
-                {/* Column 2 */}
-                <div className="flex-1 bg-brand-tertiary/5 rounded-xl border border-brand-tertiary/10 p-2 relative">
-                  <div className="w-24 h-4 bg-brand-tertiary/30 rounded mb-4"></div>
-                  <div className="w-full h-32 bg-white rounded-lg shadow-sm border border-brand-tertiary/20 flex flex-col p-3 z-10 animate-float">
-                    <div className="w-1/2 h-3 bg-slate-200 rounded mb-2"></div>
-                    <div className="w-3/4 h-4 bg-slate-800 rounded mb-4"></div>
-                    <div className="w-full h-2 bg-brand-tertiary/30 rounded-full mt-auto">
-                      <div className="w-3/4 h-full bg-brand-tertiary rounded-full"></div>
-                    </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col hover:-translate-y-1 transition-transform relative overflow-hidden">
+                <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-brand-tertiary/10 rounded-full blur-2xl"></div>
+                <div className="w-10 h-10 bg-brand-tertiary/20 text-brand-tertiary rounded-full flex items-center justify-center font-bold mb-4 shadow-sm relative z-10">2</div>
+                <h4 className="text-xl font-bold text-slate-800 mb-2 relative z-10">AI Analisis & Match Score</h4>
+                <p className="text-slate-500 text-sm mb-6 flex-1 relative z-10">Sistem membandingkan kata kunci dan memberi skor kecocokan serta saran.</p>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-brand-tertiary/20 flex flex-col items-center justify-center relative z-10">
+                  <div className="text-3xl font-black text-brand-primary">92<span className="text-lg text-slate-400">%</span></div>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full mt-3 overflow-hidden">
+                    <div className="w-[92%] h-full bg-brand-tertiary rounded-full"></div>
                   </div>
                 </div>
-                {/* Column 3 */}
-                <div className="flex-1 bg-emerald-50/50 rounded-xl border border-emerald-100/50 p-2 hidden sm:block">
-                  <div className="w-20 h-4 bg-emerald-200 rounded mb-4"></div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col hover:-translate-y-1 transition-transform">
+                <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-4 shadow-sm">3</div>
+                <h4 className="text-xl font-bold text-slate-800 mb-2">Lacak & Buat Surat</h4>
+                <p className="text-slate-500 text-sm mb-6 flex-1">Simpan lamaran ke Kanban Tracker dan *generate* AI Cover Letter.</p>
+                <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-2">
+                  <div className="bg-slate-50 p-2 rounded border border-slate-100 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <div className="w-1/2 h-2 bg-slate-200 rounded"></div>
+                  </div>
+                  <div className="bg-brand-primary/5 p-2 rounded border border-brand-primary/10 flex items-center justify-center gap-2 mt-2">
+                    <Wand2 className="w-3 h-3 text-brand-primary" />
+                    <div className="text-xs font-bold text-brand-primary">AI Cover Letter</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -131,13 +145,27 @@ export default function Home() {
             </div>
 
             {/* Feature 3: Medium Card */}
-            <div className="md:col-span-2 md:row-span-1 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-center">
+            <div className="md:col-span-1 md:row-span-1 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-center">
               <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
                 <Target className="w-7 h-7" />
               </div>
               <h3 className="text-2xl font-bold text-slate-800 mb-2">Analisis & Match Score</h3>
               <p className="text-slate-600 text-lg">
                 Sistem kami mengaudit draf CV Anda, menemukan kata kunci yang hilang, dan memberikan Match Score sebelum Anda benar-benar mengirim lamaran.
+              </p>
+            </div>
+
+            {/* Feature 4: Coming Soon Card */}
+            <div className="md:col-span-1 md:row-span-1 bg-slate-100 rounded-3xl p-8 border border-dashed border-slate-300 relative overflow-hidden group">
+              <div className="absolute top-4 right-4 bg-brand-tertiary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                Coming Soon
+              </div>
+              <div className="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center mb-6">
+                <Zap className="w-7 h-7" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-500 mb-2">AI Mock Interview</h3>
+              <p className="text-slate-400 text-lg">
+                Berlatih interview secara real-time dengan AI yang disesuaikan dengan posisi lamaran Anda. Dapatkan feedback langsung!
               </p>
             </div>
           </div>
@@ -157,14 +185,27 @@ export default function Home() {
             <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
               Berhenti menebak-nebak. Gunakan AI untuk mencocokkan CV Anda dan mulai dapatkan panggilan interview lebih banyak hari ini.
             </p>
-            <Link href="/dashboard">
-              <Button variant="primary" className="bg-brand-tertiary hover:bg-cyan-400 text-brand-primary font-bold px-10 py-5 text-xl h-auto shadow-lg hover:shadow-cyan-400/20 transition-all hover:-translate-y-1">
-                Buat Akun Gratis
-              </Button>
-            </Link>
+            <HeroCTA />
           </div>
         </div>
       </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="w-full bg-slate-50 py-8 px-4 border-t border-slate-200">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Wand2 className="w-5 h-5 text-brand-tertiary" />
+            <span className="font-bold text-lg text-brand-primary">CV Matcher</span>
+          </div>
+          <div className="text-sm text-slate-500">
+            &copy; {new Date().getFullYear()} CV Matcher. All rights reserved.
+          </div>
+          <div className="flex gap-6">
+            <Link href="#" className="text-sm font-medium text-slate-600 hover:text-brand-tertiary transition-colors">Privacy Policy</Link>
+            <Link href="#" className="text-sm font-medium text-slate-600 hover:text-brand-tertiary transition-colors">Contact Us</Link>
+          </div>
+        </div>
+      </footer>
 
     </div>
   );

@@ -207,7 +207,7 @@ function MatcherContent() {
         if (error) throw error;
       }
       
-      router.push('/dashboard');
+      router.push('/tracker');
     } catch (error) {
       console.error(error);
       alert("Gagal menyimpan data ke Tracker.");

@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Button } from './ui/Button';
@@ -41,9 +43,11 @@ export function GoogleLoginButton() {
 
   if (session) {
     return (
-      <Button onClick={handleLogout} variant="outlined">
-        Keluar
-      </Button>
+      <Link href="/dashboard">
+        <Button variant="primary">
+          Dashboard
+        </Button>
+      </Link>
     );
   }
 
