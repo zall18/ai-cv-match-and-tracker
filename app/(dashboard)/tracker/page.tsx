@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/Button';
-import { Plus, Trash2, Edit2, FileText, Wand2 } from 'lucide-react';
+import { Plus, Trash2, Edit2, FileText, Wand2, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 
@@ -201,13 +201,22 @@ export default function Tracker() {
                       </div>
                     )}
                     
-                    <button
-                      onClick={() => router.push(`/cover-letter?id=${app.id}`)}
-                      className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 px-4 bg-brand-tertiary/10 hover:bg-brand-tertiary/20 text-brand-tertiary text-sm font-bold rounded-xl transition-all border border-brand-tertiary/20 hover:scale-[1.02]"
-                    >
-                      <Wand2 className="w-4 h-4" />
-                      Buat Cover Letter
-                    </button>
+                    <div className="mt-3 flex flex-col gap-2">
+                      <button
+                        onClick={() => router.push(`/cover-letter?id=${app.id}`)}
+                        className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-brand-tertiary/10 hover:bg-brand-tertiary/20 text-brand-tertiary text-xs font-bold rounded-xl transition-all border border-brand-tertiary/20 hover:scale-[1.02]"
+                      >
+                        <Wand2 className="w-3.5 h-3.5" />
+                        Buat Cover Letter
+                      </button>
+                      <button
+                        onClick={() => router.push(`/interview?id=${app.id}`)}
+                        className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:shadow-md hover:scale-[1.02]"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        Latihan Interview
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

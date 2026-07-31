@@ -16,6 +16,7 @@ function CoverLetterGenerator() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [language, setLanguage] = useState<'en' | 'id'>('en');
+  const [tone, setTone] = useState<'professional' | 'casual' | 'direct'>('professional');
   const [coverLetter, setCoverLetter] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -57,7 +58,8 @@ function CoverLetterGenerator() {
         body: JSON.stringify({
           jobRequirement: application.job_requirement,
           cvDraft: application.cv_draft,
-          language
+          language,
+          tone
         }),
       });
 
@@ -156,6 +158,42 @@ function CoverLetterGenerator() {
                   }`}
                 >
                   Bahasa Indonesia
+                </button>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-brand-primary mb-2">Pilih Tone / Gaya Bahasa</label>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => setTone('professional')}
+                  className={`py-2 px-3 rounded-lg text-sm font-bold border transition-colors ${
+                    tone === 'professional' 
+                      ? 'bg-brand-primary text-white border-brand-primary' 
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  Professional & Formal
+                </button>
+                <button
+                  onClick={() => setTone('casual')}
+                  className={`py-2 px-3 rounded-lg text-sm font-bold border transition-colors ${
+                    tone === 'casual' 
+                      ? 'bg-brand-primary text-white border-brand-primary' 
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  Creative & Friendly
+                </button>
+                <button
+                  onClick={() => setTone('direct')}
+                  className={`py-2 px-3 rounded-lg text-sm font-bold border transition-colors ${
+                    tone === 'direct' 
+                      ? 'bg-brand-primary text-white border-brand-primary' 
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  Direct & Concise
                 </button>
               </div>
             </div>

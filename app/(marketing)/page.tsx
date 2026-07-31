@@ -155,17 +155,17 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Feature 4: Coming Soon Card */}
-            <div className="md:col-span-1 md:row-span-1 bg-slate-100 rounded-3xl p-8 border border-dashed border-slate-300 relative overflow-hidden group">
+            {/* Feature 4: New Feature Card */}
+            <div className="md:col-span-1 md:row-span-1 bg-brand-primary/5 rounded-3xl p-8 border border-brand-primary/20 relative overflow-hidden group hover:shadow-md transition-all">
               <div className="absolute top-4 right-4 bg-brand-tertiary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                Coming Soon
+                Baru ✨
               </div>
-              <div className="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-brand-primary/10 text-brand-primary rounded-2xl flex items-center justify-center mb-6">
                 <Zap className="w-7 h-7" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-500 mb-2">AI Mock Interview</h3>
-              <p className="text-slate-400 text-lg">
-                Berlatih interview secara real-time dengan AI yang disesuaikan dengan posisi lamaran Anda. Dapatkan feedback langsung!
+              <h3 className="text-2xl font-bold text-slate-800 mb-2">AI Mock Interview</h3>
+              <p className="text-slate-600 text-lg">
+                Berlatih interview secara real-time dengan AI yang disesuaikan dengan posisi lamaran Anda. Dapatkan score dan feedback langsung!
               </p>
             </div>
           </div>
