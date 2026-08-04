@@ -9,6 +9,7 @@ CREATE TABLE public.applications (
   match_score INTEGER,
   missing_keywords TEXT[],
   feedback TEXT[],
+  cover_letter TEXT,
   status TEXT CHECK (status IN ('Wishlist', 'Drafting', 'Applied', 'Interview', 'Accepted', 'Rejected')) DEFAULT 'Wishlist',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );

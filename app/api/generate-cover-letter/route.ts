@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export async function POST(req: Request) {
   try {
-    const { jobRequirement, cvDraft, language, tone = 'professional' } = await req.json();
+    const { jobRequirement, cvDraft, language, tone = 'professional', customInstructions } = await req.json();
 
     if (!jobRequirement || !cvDraft) {
       return NextResponse.json(
@@ -25,6 +25,11 @@ export async function POST(req: Request) {
       toneInstruction = 'Gunakan tone yang langsung ke intinya (Direct & Concise), menonjolkan poin-poin utama tanpa basa-basi berlebihan.';
     }
 
+    let customInstructionText = '';
+    if (customInstructions && customInstructions.trim().length > 0) {
+      customInstructionText = `7. INSTRUKSI TAMBAHAN DARI PENGGUNA (Sangat Penting): ${customInstructions}`;
+    }
+
     const SYSTEM_PROMPT = `
 Anda adalah seorang ahli penulis karir (Career Coach & Copywriter) yang bertugas menulis Cover Letter kelas dunia.
 Tugas Anda adalah membandingkan Job Requirement dan CV Draft kandidat, lalu menuliskan satu Cover Letter yang sempurna.
@@ -35,6 +40,7 @@ Aturan Penulisan:
 4. ${toneInstruction}
 5. Formatnya siap dikirim (bisa berupa struktur email atau surat formal). Termasuk placeholder seperti [Nama Anda] jika diperlukan.
 6. HANYA kembalikan teks Cover Letter-nya saja, tanpa basa-basi atau perkenalan.
+${customInstructionText}
     `;
 
     const prompt = `Job Requirement:\n${jobRequirement}\n\nCV Draft:\n${cvDraft}`;
